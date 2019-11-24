@@ -8,6 +8,7 @@ package ProyectoChat.ProyectoChat.domain;
 import java.io.Serializable;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -33,10 +34,10 @@ public class BusParada implements Serializable {
     @EmbeddedId
     protected BusParadaPK busParadaPK;
     @JoinColumn(name = "id_bus", referencedColumnName = "id_bus", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Bus bus;
     @JoinColumn(name = "id_parada", referencedColumnName = "id_parada", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Parada parada;
 
     public BusParada() {

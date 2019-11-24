@@ -11,6 +11,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -47,12 +48,12 @@ public class Ruta implements Serializable {
     @Column(name = "fin")
     private String fin;
     @JoinColumn(name = "id_pdf", referencedColumnName = "id_url", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Url url;
     @JoinColumn(name = "id_video", referencedColumnName = "id_url", insertable = false, updatable = false)
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     private Url url1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruta")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruta", fetch = FetchType.LAZY)
     private List<Parada> paradaList;
 
     public Ruta() {

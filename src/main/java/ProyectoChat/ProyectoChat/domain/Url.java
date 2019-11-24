@@ -11,6 +11,7 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
@@ -47,9 +48,9 @@ public class Url implements Serializable {
     @Size(max = 500)
     @Column(name = "url")
     private String url;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url", fetch = FetchType.LAZY)
     private List<Ruta> rutaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url1")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url1", fetch = FetchType.LAZY)
     private List<Ruta> rutaList1;
 
     public Url() {
