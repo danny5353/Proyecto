@@ -7,14 +7,18 @@ package ProyectoChat.ProyectoChat.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -30,13 +34,16 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "Tarifa.findByIdTarifa", query = "SELECT t FROM Tarifa t WHERE t.idTarifa = :idTarifa"),
     @NamedQuery(name = "Tarifa.findByTarifa", query = "SELECT t FROM Tarifa t WHERE t.tarifa = :tarifa"),
     @NamedQuery(name = "Tarifa.findByPrecioDiurno", query = "SELECT t FROM Tarifa t WHERE t.precioDiurno = :precioDiurno"),
-    @NamedQuery(name = "Tarifa.findByPrecioNocturno", query = "SELECT t FROM Tarifa t WHERE t.precioNocturno = :precioNocturno")})
+    @NamedQuery(name = "Tarifa.findByPrecioNocturno", query = "SELECT t FROM Tarifa t WHERE t.precioNocturno = :precioNocturno"),
+    @NamedQuery(name = "Tarifa.findByTxUser", query = "SELECT t FROM Tarifa t WHERE t.txUser = :txUser"),
+    @NamedQuery(name = "Tarifa.findByTxHost", query = "SELECT t FROM Tarifa t WHERE t.txHost = :txHost"),
+    @NamedQuery(name = "Tarifa.findByTxDate", query = "SELECT t FROM Tarifa t WHERE t.txDate = :txDate")})
 public class Tarifa implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_tarifa")
     private Integer idTarifa;
     @Size(max = 50)
@@ -47,6 +54,15 @@ public class Tarifa implements Serializable {
     private BigDecimal precioDiurno;
     @Column(name = "precio_nocturno")
     private BigDecimal precioNocturno;
+    @Size(max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Size(max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private Date txDate;
 
     public Tarifa() {
     }
@@ -85,6 +101,30 @@ public class Tarifa implements Serializable {
 
     public void setPrecioNocturno(BigDecimal precioNocturno) {
         this.precioNocturno = precioNocturno;
+    }
+
+    public String getTxUser() {
+        return txUser;
+    }
+
+    public void setTxUser(String txUser) {
+        this.txUser = txUser;
+    }
+
+    public String getTxHost() {
+        return txHost;
+    }
+
+    public void setTxHost(String txHost) {
+        this.txHost = txHost;
+    }
+
+    public Date getTxDate() {
+        return txDate;
+    }
+
+    public void setTxDate(Date txDate) {
+        this.txDate = txDate;
     }
 
     @Override

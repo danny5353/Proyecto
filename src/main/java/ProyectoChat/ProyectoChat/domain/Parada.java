@@ -6,18 +6,23 @@
 package ProyectoChat.ProyectoChat.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -31,18 +36,23 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Parada.findAll", query = "SELECT p FROM Parada p"),
-    @NamedQuery(name = "Parada.findByIdParada", query = "SELECT p FROM Parada p WHERE p.paradaPK.idParada = :idParada"),
+    @NamedQuery(name = "Parada.findByIdParada", query = "SELECT p FROM Parada p WHERE p.idParada = :idParada"),
     @NamedQuery(name = "Parada.findByViajSuben", query = "SELECT p FROM Parada p WHERE p.viajSuben = :viajSuben"),
     @NamedQuery(name = "Parada.findByViajBajan", query = "SELECT p FROM Parada p WHERE p.viajBajan = :viajBajan"),
     @NamedQuery(name = "Parada.findByLatitud", query = "SELECT p FROM Parada p WHERE p.latitud = :latitud"),
     @NamedQuery(name = "Parada.findByLongitud", query = "SELECT p FROM Parada p WHERE p.longitud = :longitud"),
     @NamedQuery(name = "Parada.findByCalle", query = "SELECT p FROM Parada p WHERE p.calle = :calle"),
-    @NamedQuery(name = "Parada.findByIdRuta", query = "SELECT p FROM Parada p WHERE p.paradaPK.idRuta = :idRuta")})
+    @NamedQuery(name = "Parada.findByTxUser", query = "SELECT p FROM Parada p WHERE p.txUser = :txUser"),
+    @NamedQuery(name = "Parada.findByTxHost", query = "SELECT p FROM Parada p WHERE p.txHost = :txHost"),
+    @NamedQuery(name = "Parada.findByTxDate", query = "SELECT p FROM Parada p WHERE p.txDate = :txDate")})
 public class Parada implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected ParadaPK paradaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_parada")
+    private Integer idParada;
     @Column(name = "viaj_suben")
     private Integer viajSuben;
     @Column(name = "viaj_bajan")
@@ -56,29 +66,34 @@ public class Parada implements Serializable {
     @Size(max = 500)
     @Column(name = "calle")
     private String calle;
-    @JoinColumn(name = "id_ruta", referencedColumnName = "id_ruta", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Ruta ruta;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "parada", fetch = FetchType.LAZY)
+    @Size(max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Size(max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private Date txDate;
+    @JoinColumn(name = "id_ruta", referencedColumnName = "id_ruta")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Ruta idRuta;
+    @OneToMany(mappedBy = "idParada", fetch = FetchType.LAZY)
     private List<BusParada> busParadaList;
 
     public Parada() {
     }
 
-    public Parada(ParadaPK paradaPK) {
-        this.paradaPK = paradaPK;
+    public Parada(Integer idParada) {
+        this.idParada = idParada;
     }
 
-    public Parada(int idParada, int idRuta) {
-        this.paradaPK = new ParadaPK(idParada, idRuta);
+    public Integer getIdParada() {
+        return idParada;
     }
 
-    public ParadaPK getParadaPK() {
-        return paradaPK;
-    }
-
-    public void setParadaPK(ParadaPK paradaPK) {
-        this.paradaPK = paradaPK;
+    public void setIdParada(Integer idParada) {
+        this.idParada = idParada;
     }
 
     public Integer getViajSuben() {
@@ -121,12 +136,36 @@ public class Parada implements Serializable {
         this.calle = calle;
     }
 
-    public Ruta getRuta() {
-        return ruta;
+    public String getTxUser() {
+        return txUser;
     }
 
-    public void setRuta(Ruta ruta) {
-        this.ruta = ruta;
+    public void setTxUser(String txUser) {
+        this.txUser = txUser;
+    }
+
+    public String getTxHost() {
+        return txHost;
+    }
+
+    public void setTxHost(String txHost) {
+        this.txHost = txHost;
+    }
+
+    public Date getTxDate() {
+        return txDate;
+    }
+
+    public void setTxDate(Date txDate) {
+        this.txDate = txDate;
+    }
+
+    public Ruta getIdRuta() {
+        return idRuta;
+    }
+
+    public void setIdRuta(Ruta idRuta) {
+        this.idRuta = idRuta;
     }
 
     @XmlTransient
@@ -141,7 +180,7 @@ public class Parada implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (paradaPK != null ? paradaPK.hashCode() : 0);
+        hash += (idParada != null ? idParada.hashCode() : 0);
         return hash;
     }
 
@@ -152,7 +191,7 @@ public class Parada implements Serializable {
             return false;
         }
         Parada other = (Parada) object;
-        if ((this.paradaPK == null && other.paradaPK != null) || (this.paradaPK != null && !this.paradaPK.equals(other.paradaPK))) {
+        if ((this.idParada == null && other.idParada != null) || (this.idParada != null && !this.idParada.equals(other.idParada))) {
             return false;
         }
         return true;
@@ -160,7 +199,7 @@ public class Parada implements Serializable {
 
     @Override
     public String toString() {
-        return "ProyectoChat.ProyectoChat.domain.Parada[ paradaPK=" + paradaPK + " ]";
+        return "ProyectoChat.ProyectoChat.domain.Parada[ idParada=" + idParada + " ]";
     }
     
 }

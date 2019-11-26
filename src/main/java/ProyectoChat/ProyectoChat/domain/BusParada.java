@@ -6,9 +6,13 @@
 package ProyectoChat.ProyectoChat.domain;
 
 import java.io.Serializable;
-import javax.persistence.EmbeddedId;
+import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -25,60 +29,57 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "BusParada.findAll", query = "SELECT b FROM BusParada b"),
-    @NamedQuery(name = "BusParada.findByIdBuspar", query = "SELECT b FROM BusParada b WHERE b.busParadaPK.idBuspar = :idBuspar"),
-    @NamedQuery(name = "BusParada.findByIdBus", query = "SELECT b FROM BusParada b WHERE b.busParadaPK.idBus = :idBus"),
-    @NamedQuery(name = "BusParada.findByIdParada", query = "SELECT b FROM BusParada b WHERE b.busParadaPK.idParada = :idParada")})
+    @NamedQuery(name = "BusParada.findByIdBuspar", query = "SELECT b FROM BusParada b WHERE b.idBuspar = :idBuspar")})
 public class BusParada implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected BusParadaPK busParadaPK;
-    @JoinColumn(name = "id_bus", referencedColumnName = "id_bus", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Bus bus;
-    @JoinColumn(name = "id_parada", referencedColumnName = "id_parada", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Parada parada;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_buspar")
+    private Integer idBuspar;
+    @JoinColumn(name = "id_bus", referencedColumnName = "id_bus")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Bus idBus;
+    @JoinColumn(name = "id_parada", referencedColumnName = "id_parada")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Parada idParada;
 
     public BusParada() {
     }
 
-    public BusParada(BusParadaPK busParadaPK) {
-        this.busParadaPK = busParadaPK;
+    public BusParada(Integer idBuspar) {
+        this.idBuspar = idBuspar;
     }
 
-    public BusParada(int idBuspar, int idBus, int idParada) {
-        this.busParadaPK = new BusParadaPK(idBuspar, idBus, idParada);
+    public Integer getIdBuspar() {
+        return idBuspar;
     }
 
-    public BusParadaPK getBusParadaPK() {
-        return busParadaPK;
+    public void setIdBuspar(Integer idBuspar) {
+        this.idBuspar = idBuspar;
     }
 
-    public void setBusParadaPK(BusParadaPK busParadaPK) {
-        this.busParadaPK = busParadaPK;
+    public Bus getIdBus() {
+        return idBus;
     }
 
-    public Bus getBus() {
-        return bus;
+    public void setIdBus(Bus idBus) {
+        this.idBus = idBus;
     }
 
-    public void setBus(Bus bus) {
-        this.bus = bus;
+    public Parada getIdParada() {
+        return idParada;
     }
 
-    public Parada getParada() {
-        return parada;
-    }
-
-    public void setParada(Parada parada) {
-        this.parada = parada;
+    public void setIdParada(Parada idParada) {
+        this.idParada = idParada;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (busParadaPK != null ? busParadaPK.hashCode() : 0);
+        hash += (idBuspar != null ? idBuspar.hashCode() : 0);
         return hash;
     }
 
@@ -89,7 +90,7 @@ public class BusParada implements Serializable {
             return false;
         }
         BusParada other = (BusParada) object;
-        if ((this.busParadaPK == null && other.busParadaPK != null) || (this.busParadaPK != null && !this.busParadaPK.equals(other.busParadaPK))) {
+        if ((this.idBuspar == null && other.idBuspar != null) || (this.idBuspar != null && !this.idBuspar.equals(other.idBuspar))) {
             return false;
         }
         return true;
@@ -97,7 +98,7 @@ public class BusParada implements Serializable {
 
     @Override
     public String toString() {
-        return "ProyectoChat.ProyectoChat.domain.BusParada[ busParadaPK=" + busParadaPK + " ]";
+        return "ProyectoChat.ProyectoChat.domain.BusParada[ idBuspar=" + idBuspar + " ]";
     }
     
 }

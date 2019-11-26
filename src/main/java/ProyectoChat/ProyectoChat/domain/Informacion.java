@@ -7,10 +7,13 @@ package ProyectoChat.ProyectoChat.domain;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
@@ -30,16 +33,21 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Informacion.findAll", query = "SELECT i FROM Informacion i"),
-    @NamedQuery(name = "Informacion.findByIdInformacion", query = "SELECT i FROM Informacion i WHERE i.informacionPK.idInformacion = :idInformacion"),
+    @NamedQuery(name = "Informacion.findByIdInformacion", query = "SELECT i FROM Informacion i WHERE i.idInformacion = :idInformacion"),
     @NamedQuery(name = "Informacion.findByInformacion", query = "SELECT i FROM Informacion i WHERE i.informacion = :informacion"),
     @NamedQuery(name = "Informacion.findByFecha", query = "SELECT i FROM Informacion i WHERE i.fecha = :fecha"),
     @NamedQuery(name = "Informacion.findByImagen", query = "SELECT i FROM Informacion i WHERE i.imagen = :imagen"),
-    @NamedQuery(name = "Informacion.findByIdTipoi", query = "SELECT i FROM Informacion i WHERE i.informacionPK.idTipoi = :idTipoi")})
+    @NamedQuery(name = "Informacion.findByTxUser", query = "SELECT i FROM Informacion i WHERE i.txUser = :txUser"),
+    @NamedQuery(name = "Informacion.findByTxHost", query = "SELECT i FROM Informacion i WHERE i.txHost = :txHost"),
+    @NamedQuery(name = "Informacion.findByTxDate", query = "SELECT i FROM Informacion i WHERE i.txDate = :txDate")})
 public class Informacion implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected InformacionPK informacionPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_informacion")
+    private Integer idInformacion;
     @Size(max = 3500)
     @Column(name = "informacion")
     private String informacion;
@@ -49,27 +57,32 @@ public class Informacion implements Serializable {
     @Size(max = 500)
     @Column(name = "imagen")
     private String imagen;
-    @JoinColumn(name = "id_tipoi", referencedColumnName = "id_tipoi", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private TipoInformacion tipoInformacion;
+    @Size(max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Size(max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private Date txDate;
+    @JoinColumn(name = "id_tipoi", referencedColumnName = "id_tipoi")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private TipoInformacion idTipoi;
 
     public Informacion() {
     }
 
-    public Informacion(InformacionPK informacionPK) {
-        this.informacionPK = informacionPK;
+    public Informacion(Integer idInformacion) {
+        this.idInformacion = idInformacion;
     }
 
-    public Informacion(int idInformacion, int idTipoi) {
-        this.informacionPK = new InformacionPK(idInformacion, idTipoi);
+    public Integer getIdInformacion() {
+        return idInformacion;
     }
 
-    public InformacionPK getInformacionPK() {
-        return informacionPK;
-    }
-
-    public void setInformacionPK(InformacionPK informacionPK) {
-        this.informacionPK = informacionPK;
+    public void setIdInformacion(Integer idInformacion) {
+        this.idInformacion = idInformacion;
     }
 
     public String getInformacion() {
@@ -96,18 +109,42 @@ public class Informacion implements Serializable {
         this.imagen = imagen;
     }
 
-    public TipoInformacion getTipoInformacion() {
-        return tipoInformacion;
+    public String getTxUser() {
+        return txUser;
     }
 
-    public void setTipoInformacion(TipoInformacion tipoInformacion) {
-        this.tipoInformacion = tipoInformacion;
+    public void setTxUser(String txUser) {
+        this.txUser = txUser;
+    }
+
+    public String getTxHost() {
+        return txHost;
+    }
+
+    public void setTxHost(String txHost) {
+        this.txHost = txHost;
+    }
+
+    public Date getTxDate() {
+        return txDate;
+    }
+
+    public void setTxDate(Date txDate) {
+        this.txDate = txDate;
+    }
+
+    public TipoInformacion getIdTipoi() {
+        return idTipoi;
+    }
+
+    public void setIdTipoi(TipoInformacion idTipoi) {
+        this.idTipoi = idTipoi;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (informacionPK != null ? informacionPK.hashCode() : 0);
+        hash += (idInformacion != null ? idInformacion.hashCode() : 0);
         return hash;
     }
 
@@ -118,7 +155,7 @@ public class Informacion implements Serializable {
             return false;
         }
         Informacion other = (Informacion) object;
-        if ((this.informacionPK == null && other.informacionPK != null) || (this.informacionPK != null && !this.informacionPK.equals(other.informacionPK))) {
+        if ((this.idInformacion == null && other.idInformacion != null) || (this.idInformacion != null && !this.idInformacion.equals(other.idInformacion))) {
             return false;
         }
         return true;
@@ -126,7 +163,7 @@ public class Informacion implements Serializable {
 
     @Override
     public String toString() {
-        return "ProyectoChat.ProyectoChat.domain.Informacion[ informacionPK=" + informacionPK + " ]";
+        return "ProyectoChat.ProyectoChat.domain.Informacion[ idInformacion=" + idInformacion + " ]";
     }
     
 }

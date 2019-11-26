@@ -29,34 +29,34 @@ import javax.xml.bind.annotation.XmlRootElement;
  * @author macbookpro
  */
 @Entity
-@Table(name = "ubicacion")
+@Table(name = "chat")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Ubicacion.findAll", query = "SELECT u FROM Ubicacion u"),
-    @NamedQuery(name = "Ubicacion.findByIdUbicacion", query = "SELECT u FROM Ubicacion u WHERE u.idUbicacion = :idUbicacion"),
-    @NamedQuery(name = "Ubicacion.findByLatitud", query = "SELECT u FROM Ubicacion u WHERE u.latitud = :latitud"),
-    @NamedQuery(name = "Ubicacion.findByLongitud", query = "SELECT u FROM Ubicacion u WHERE u.longitud = :longitud"),
-    @NamedQuery(name = "Ubicacion.findByCalle", query = "SELECT u FROM Ubicacion u WHERE u.calle = :calle"),
-    @NamedQuery(name = "Ubicacion.findByTxUser", query = "SELECT u FROM Ubicacion u WHERE u.txUser = :txUser"),
-    @NamedQuery(name = "Ubicacion.findByTxHost", query = "SELECT u FROM Ubicacion u WHERE u.txHost = :txHost"),
-    @NamedQuery(name = "Ubicacion.findByTxDate", query = "SELECT u FROM Ubicacion u WHERE u.txDate = :txDate")})
-public class Ubicacion implements Serializable {
+    @NamedQuery(name = "Chat.findAll", query = "SELECT c FROM Chat c"),
+    @NamedQuery(name = "Chat.findByIdChat", query = "SELECT c FROM Chat c WHERE c.idChat = :idChat"),
+    @NamedQuery(name = "Chat.findByInMessage", query = "SELECT c FROM Chat c WHERE c.inMessage = :inMessage"),
+    @NamedQuery(name = "Chat.findByOutMessage", query = "SELECT c FROM Chat c WHERE c.outMessage = :outMessage"),
+    @NamedQuery(name = "Chat.findByMsgDate", query = "SELECT c FROM Chat c WHERE c.msgDate = :msgDate"),
+    @NamedQuery(name = "Chat.findByTxUser", query = "SELECT c FROM Chat c WHERE c.txUser = :txUser"),
+    @NamedQuery(name = "Chat.findByTxHost", query = "SELECT c FROM Chat c WHERE c.txHost = :txHost"),
+    @NamedQuery(name = "Chat.findByTxDate", query = "SELECT c FROM Chat c WHERE c.txDate = :txDate")})
+public class Chat implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @Column(name = "id_ubicacion")
-    private Integer idUbicacion;
-    @Size(max = 500)
-    @Column(name = "latitud")
-    private String latitud;
-    @Size(max = 500)
-    @Column(name = "longitud")
-    private String longitud;
-    @Size(max = 500)
-    @Column(name = "calle")
-    private String calle;
+    @Column(name = "id_chat")
+    private Integer idChat;
+    @Size(max = 200)
+    @Column(name = "in_message")
+    private String inMessage;
+    @Size(max = 200)
+    @Column(name = "out_message")
+    private String outMessage;
+    @Column(name = "msg_date")
+    @Temporal(TemporalType.DATE)
+    private Date msgDate;
     @Size(max = 50)
     @Column(name = "tx_user")
     private String txUser;
@@ -70,43 +70,43 @@ public class Ubicacion implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     private Usuario idUsuario;
 
-    public Ubicacion() {
+    public Chat() {
     }
 
-    public Ubicacion(Integer idUbicacion) {
-        this.idUbicacion = idUbicacion;
+    public Chat(Integer idChat) {
+        this.idChat = idChat;
     }
 
-    public Integer getIdUbicacion() {
-        return idUbicacion;
+    public Integer getIdChat() {
+        return idChat;
     }
 
-    public void setIdUbicacion(Integer idUbicacion) {
-        this.idUbicacion = idUbicacion;
+    public void setIdChat(Integer idChat) {
+        this.idChat = idChat;
     }
 
-    public String getLatitud() {
-        return latitud;
+    public String getInMessage() {
+        return inMessage;
     }
 
-    public void setLatitud(String latitud) {
-        this.latitud = latitud;
+    public void setInMessage(String inMessage) {
+        this.inMessage = inMessage;
     }
 
-    public String getLongitud() {
-        return longitud;
+    public String getOutMessage() {
+        return outMessage;
     }
 
-    public void setLongitud(String longitud) {
-        this.longitud = longitud;
+    public void setOutMessage(String outMessage) {
+        this.outMessage = outMessage;
     }
 
-    public String getCalle() {
-        return calle;
+    public Date getMsgDate() {
+        return msgDate;
     }
 
-    public void setCalle(String calle) {
-        this.calle = calle;
+    public void setMsgDate(Date msgDate) {
+        this.msgDate = msgDate;
     }
 
     public String getTxUser() {
@@ -144,18 +144,18 @@ public class Ubicacion implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (idUbicacion != null ? idUbicacion.hashCode() : 0);
+        hash += (idChat != null ? idChat.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Ubicacion)) {
+        if (!(object instanceof Chat)) {
             return false;
         }
-        Ubicacion other = (Ubicacion) object;
-        if ((this.idUbicacion == null && other.idUbicacion != null) || (this.idUbicacion != null && !this.idUbicacion.equals(other.idUbicacion))) {
+        Chat other = (Chat) object;
+        if ((this.idChat == null && other.idChat != null) || (this.idChat != null && !this.idChat.equals(other.idChat))) {
             return false;
         }
         return true;
@@ -163,7 +163,7 @@ public class Ubicacion implements Serializable {
 
     @Override
     public String toString() {
-        return "ProyectoChat.ProyectoChat.domain.Ubicacion[ idUbicacion=" + idUbicacion + " ]";
+        return "ProyectoChat.ProyectoChat.domain.Chat[ idChat=" + idChat + " ]";
     }
     
 }

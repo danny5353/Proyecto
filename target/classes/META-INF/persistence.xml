@@ -2,18 +2,19 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="ProyectoChat_ProyectoChat_jar_0.0.1-SNAPSHOTPU" transaction-type="RESOURCE_LOCAL">
     <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+    <class>ProyectoChat.ProyectoChat.domain.Ruta</class>
+    <class>ProyectoChat.ProyectoChat.domain.Parada</class>
     <class>ProyectoChat.ProyectoChat.domain.TipoInformacion</class>
     <class>ProyectoChat.ProyectoChat.domain.Bus</class>
-    <class>ProyectoChat.ProyectoChat.domain.Ruta</class>
-    <class>ProyectoChat.ProyectoChat.domain.BusParada</class>
-    <class>ProyectoChat.ProyectoChat.domain.Informacion</class>
     <class>ProyectoChat.ProyectoChat.domain.Usuario</class>
-    <class>ProyectoChat.ProyectoChat.domain.Tarifa</class>
     <class>ProyectoChat.ProyectoChat.domain.Url</class>
-    <class>ProyectoChat.ProyectoChat.domain.Parada</class>
     <class>ProyectoChat.ProyectoChat.domain.Ubicacion</class>
+    <class>ProyectoChat.ProyectoChat.domain.Informacion</class>
+    <class>ProyectoChat.ProyectoChat.domain.Chat</class>
+    <class>ProyectoChat.ProyectoChat.domain.Tarifa</class>
+    <class>ProyectoChat.ProyectoChat.domain.BusParada</class>
     <properties>
-      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.64.2:3306/pumachat?zeroDateTimeBehavior=convertToNull"/>
+      <property name="javax.persistence.jdbc.url" value="jdbc:mysql://192.168.64.2:3306/prueba?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="root"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>
       <property name="javax.persistence.jdbc.password" value=""/>

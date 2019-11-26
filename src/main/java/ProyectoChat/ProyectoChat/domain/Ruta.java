@@ -6,18 +6,23 @@
 package ProyectoChat.ProyectoChat.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
-import javax.persistence.CascadeType;
+import javax.persistence.Basic;
 import javax.persistence.Column;
-import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -31,48 +36,57 @@ import javax.xml.bind.annotation.XmlTransient;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Ruta.findAll", query = "SELECT r FROM Ruta r"),
-    @NamedQuery(name = "Ruta.findByIdRuta", query = "SELECT r FROM Ruta r WHERE r.rutaPK.idRuta = :idRuta"),
+    @NamedQuery(name = "Ruta.findByIdRuta", query = "SELECT r FROM Ruta r WHERE r.idRuta = :idRuta"),
     @NamedQuery(name = "Ruta.findByInicio", query = "SELECT r FROM Ruta r WHERE r.inicio = :inicio"),
     @NamedQuery(name = "Ruta.findByFin", query = "SELECT r FROM Ruta r WHERE r.fin = :fin"),
-    @NamedQuery(name = "Ruta.findByIdPdf", query = "SELECT r FROM Ruta r WHERE r.rutaPK.idPdf = :idPdf"),
-    @NamedQuery(name = "Ruta.findByIdVideo", query = "SELECT r FROM Ruta r WHERE r.rutaPK.idVideo = :idVideo")})
+    @NamedQuery(name = "Ruta.findByTxUser", query = "SELECT r FROM Ruta r WHERE r.txUser = :txUser"),
+    @NamedQuery(name = "Ruta.findByTxHost", query = "SELECT r FROM Ruta r WHERE r.txHost = :txHost"),
+    @NamedQuery(name = "Ruta.findByTxDate", query = "SELECT r FROM Ruta r WHERE r.txDate = :txDate")})
 public class Ruta implements Serializable {
 
     private static final long serialVersionUID = 1L;
-    @EmbeddedId
-    protected RutaPK rutaPK;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Basic(optional = false)
+    @Column(name = "id_ruta")
+    private Integer idRuta;
     @Size(max = 200)
     @Column(name = "inicio")
     private String inicio;
     @Size(max = 200)
     @Column(name = "fin")
     private String fin;
-    @JoinColumn(name = "id_pdf", referencedColumnName = "id_url", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Url url;
-    @JoinColumn(name = "id_video", referencedColumnName = "id_url", insertable = false, updatable = false)
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    private Url url1;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ruta", fetch = FetchType.LAZY)
+    @Size(max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Size(max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private Date txDate;
+    @JoinColumn(name = "id_pdf", referencedColumnName = "id_url")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Url idPdf;
+    @JoinColumn(name = "id_video", referencedColumnName = "id_url")
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Url idVideo;
+    @OneToMany(mappedBy = "idRuta", fetch = FetchType.LAZY)
     private List<Parada> paradaList;
 
     public Ruta() {
     }
 
-    public Ruta(RutaPK rutaPK) {
-        this.rutaPK = rutaPK;
+    public Ruta(Integer idRuta) {
+        this.idRuta = idRuta;
     }
 
-    public Ruta(int idRuta, int idPdf, int idVideo) {
-        this.rutaPK = new RutaPK(idRuta, idPdf, idVideo);
+    public Integer getIdRuta() {
+        return idRuta;
     }
 
-    public RutaPK getRutaPK() {
-        return rutaPK;
-    }
-
-    public void setRutaPK(RutaPK rutaPK) {
-        this.rutaPK = rutaPK;
+    public void setIdRuta(Integer idRuta) {
+        this.idRuta = idRuta;
     }
 
     public String getInicio() {
@@ -91,20 +105,44 @@ public class Ruta implements Serializable {
         this.fin = fin;
     }
 
-    public Url getUrl() {
-        return url;
+    public String getTxUser() {
+        return txUser;
     }
 
-    public void setUrl(Url url) {
-        this.url = url;
+    public void setTxUser(String txUser) {
+        this.txUser = txUser;
     }
 
-    public Url getUrl1() {
-        return url1;
+    public String getTxHost() {
+        return txHost;
     }
 
-    public void setUrl1(Url url1) {
-        this.url1 = url1;
+    public void setTxHost(String txHost) {
+        this.txHost = txHost;
+    }
+
+    public Date getTxDate() {
+        return txDate;
+    }
+
+    public void setTxDate(Date txDate) {
+        this.txDate = txDate;
+    }
+
+    public Url getIdPdf() {
+        return idPdf;
+    }
+
+    public void setIdPdf(Url idPdf) {
+        this.idPdf = idPdf;
+    }
+
+    public Url getIdVideo() {
+        return idVideo;
+    }
+
+    public void setIdVideo(Url idVideo) {
+        this.idVideo = idVideo;
     }
 
     @XmlTransient
@@ -119,7 +157,7 @@ public class Ruta implements Serializable {
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (rutaPK != null ? rutaPK.hashCode() : 0);
+        hash += (idRuta != null ? idRuta.hashCode() : 0);
         return hash;
     }
 
@@ -130,7 +168,7 @@ public class Ruta implements Serializable {
             return false;
         }
         Ruta other = (Ruta) object;
-        if ((this.rutaPK == null && other.rutaPK != null) || (this.rutaPK != null && !this.rutaPK.equals(other.rutaPK))) {
+        if ((this.idRuta == null && other.idRuta != null) || (this.idRuta != null && !this.idRuta.equals(other.idRuta))) {
             return false;
         }
         return true;
@@ -138,7 +176,7 @@ public class Ruta implements Serializable {
 
     @Override
     public String toString() {
-        return "ProyectoChat.ProyectoChat.domain.Ruta[ rutaPK=" + rutaPK + " ]";
+        return "ProyectoChat.ProyectoChat.domain.Ruta[ idRuta=" + idRuta + " ]";
     }
     
 }

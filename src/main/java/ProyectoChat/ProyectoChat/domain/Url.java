@@ -6,18 +6,21 @@
 package ProyectoChat.ProyectoChat.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -33,13 +36,16 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Url.findAll", query = "SELECT u FROM Url u"),
     @NamedQuery(name = "Url.findByIdUrl", query = "SELECT u FROM Url u WHERE u.idUrl = :idUrl"),
     @NamedQuery(name = "Url.findByNombre", query = "SELECT u FROM Url u WHERE u.nombre = :nombre"),
-    @NamedQuery(name = "Url.findByUrl", query = "SELECT u FROM Url u WHERE u.url = :url")})
+    @NamedQuery(name = "Url.findByUrl", query = "SELECT u FROM Url u WHERE u.url = :url"),
+    @NamedQuery(name = "Url.findByTxUser", query = "SELECT u FROM Url u WHERE u.txUser = :txUser"),
+    @NamedQuery(name = "Url.findByTxHost", query = "SELECT u FROM Url u WHERE u.txHost = :txHost"),
+    @NamedQuery(name = "Url.findByTxDate", query = "SELECT u FROM Url u WHERE u.txDate = :txDate")})
 public class Url implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
-    @NotNull
     @Column(name = "id_url")
     private Integer idUrl;
     @Size(max = 200)
@@ -48,9 +54,18 @@ public class Url implements Serializable {
     @Size(max = 500)
     @Column(name = "url")
     private String url;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url", fetch = FetchType.LAZY)
+    @Size(max = 50)
+    @Column(name = "tx_user")
+    private String txUser;
+    @Size(max = 100)
+    @Column(name = "tx_host")
+    private String txHost;
+    @Column(name = "tx_date")
+    @Temporal(TemporalType.DATE)
+    private Date txDate;
+    @OneToMany(mappedBy = "idPdf", fetch = FetchType.LAZY)
     private List<Ruta> rutaList;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "url1", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "idVideo", fetch = FetchType.LAZY)
     private List<Ruta> rutaList1;
 
     public Url() {
@@ -82,6 +97,30 @@ public class Url implements Serializable {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTxUser() {
+        return txUser;
+    }
+
+    public void setTxUser(String txUser) {
+        this.txUser = txUser;
+    }
+
+    public String getTxHost() {
+        return txHost;
+    }
+
+    public void setTxHost(String txHost) {
+        this.txHost = txHost;
+    }
+
+    public Date getTxDate() {
+        return txDate;
+    }
+
+    public void setTxDate(Date txDate) {
+        this.txDate = txDate;
     }
 
     @XmlTransient
