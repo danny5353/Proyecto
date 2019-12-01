@@ -1,54 +1,60 @@
 package ProyectoChat.ProyectoChat.bot;
 
 
+import ProyectoChat.ProyectoChat.bl.UserBl;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainBot extends TelegramLongPollingBot {
 
 
-        public void onUpdateReceived(Update update) {
+    public void onUpdateReceived(Update update) {
 
 //            System.out.println(update.getMessage().getText());
 //            System.out.println(update.getMessage().getFrom().getFirstName() );
 
-            private User botBl;
+        UserBl userBl;
 
-            String command=update.getMessage().getText();
+        String command = update.getMessage().getText();
 
-            SendMessage message = new SendMessage();
+        SendMessage message = new SendMessage();
 
-            if(command.equals("/myname")){
+        if (command.equals("/myname")) {
 
-                System.out.println(update.getMessage().getFrom().getFirstName());
+            System.out.println(update.getMessage().getFrom().getFirstName());
 
-                message.setText(update.getMessage().getFrom().getFirstName());
-            }
-
-            if (command.equals("/mylastname")){
-
-                System.out.println(update.getMessage().getFrom().getLastName());
-                message.setText(update.getMessage().getFrom().getLastName());
-            }
-
-            if (command.equals("/myfullname")){
-                System.out.println(update.getMessage().getFrom().getFirstName()+" "+update.getMessage().getFrom().getLastName());
-           message.setText(update.getMessage().getFrom().getFirstName()+" "+update.getMessage().getFrom().getLastName());
-            }
-
-            message.setChatId(update.getMessage().getChatId());
-
-
-            try {
-                execute(message);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
+            message.setText(update.getMessage().getFrom().getFirstName());
         }
+
+        if (command.equals("/mylastname")) {
+
+            System.out.println(update.getMessage().getFrom().getLastName());
+            message.setText(update.getMessage().getFrom().getLastName());
+        }
+
+        if (command.equals("/myfullname")) {
+            System.out.println(update.getMessage().getFrom().getFirstName() + " " + update.getMessage().getFrom().getLastName());
+            message.setText(update.getMessage().getFrom().getFirstName() + " " + update.getMessage().getFrom().getLastName());
+        }
+
+        message.setChatId(update.getMessage().getChatId());
+
+
+        try {
+            execute(message);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
 
 /*    public void onUpdateReceived(final Update update) {
 
@@ -118,5 +124,33 @@ public class MainBot extends TelegramLongPollingBot {
     @Override
     public String getBotToken() {
         return "995973762:AAE_eVo6XEd1fuMiei1Z7D-j7v8UhIncDHc";
+    }
+
+    private ReplyKeyboardMarkup createReplyKeyboardPumaChat() {
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        //Lista registro de usuario
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add("Registrar Usuario");
+        keyboardMarkup.setKeyboard(keyboard);
+        return keyboardMarkup;
+    }
+
+    public void response(int conversation, Update update) {
+        List<String> responses = new ArrayList<>();
+        ReplyKeyboardMarkup rekema = null;
+        switch (conversation) {
+            case 1:
+                responses.add("Bienvenido");
+                responses.add("Ingresa tu nombre");
+                break;
+            case 2:
+                responses.add("Ingresa tu apellido");
+                break;
+            case 3:
+                responses.add("Ingresa tu fecha de nacimiento");
+                break;
+        }
+
     }
 }
