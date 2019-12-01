@@ -16,6 +16,8 @@ public class MainBot extends TelegramLongPollingBot {
 //            System.out.println(update.getMessage().getText());
 //            System.out.println(update.getMessage().getFrom().getFirstName() );
 
+            private User botBl;
+
             String command=update.getMessage().getText();
 
             SendMessage message = new SendMessage();
