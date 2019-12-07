@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
+
+    <persistence-unit name="NewPersistenceUnit">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>com.Proyecto.Proyecto.domain.CpBus</class>
+        <class>com.Proyecto.Proyecto.domain.CpBusParada</class>
+        <class>com.Proyecto.Proyecto.domain.CpChat</class>
+        <class>com.Proyecto.Proyecto.domain.CpInformacion</class>
+        <class>com.Proyecto.Proyecto.domain.CpParada</class>
+        <class>com.Proyecto.Proyecto.domain.CpRuta</class>
+        <class>com.Proyecto.Proyecto.domain.CpTarifa</class>
+        <class>com.Proyecto.Proyecto.domain.CpTipoInformacion</class>
+        <class>com.Proyecto.Proyecto.domain.CpTipoUsuario</class>
+        <class>com.Proyecto.Proyecto.domain.CpUbicacion</class>
+        <class>com.Proyecto.Proyecto.domain.CpUrl</class>
+        <class>com.Proyecto.Proyecto.domain.CpUsuario</class>
+        <properties>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/prueba"/>
+            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
+            <property name="hibernate.connection.username" value=""/>
+            <property name="hibernate.connection.password" value=""/>
+            <property name="hibernate.archive.autodetection" value="class"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+        </properties>
+    </persistence-unit>
+</persistence>
