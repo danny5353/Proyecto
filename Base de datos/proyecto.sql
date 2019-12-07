@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 07-12-2019 a las 00:13:44
+-- Tiempo de generación: 07-12-2019 a las 08:37:39
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.2.22
 
@@ -46,8 +46,14 @@ CREATE TABLE `bus` (
 
 CREATE TABLE `bus_parada` (
   `id_buspar` int(11) NOT NULL,
-  `id_bus` int(11) NOT NULL,
-  `id_parada` int(11) NOT NULL
+  `id_bus` int(11) DEFAULT NULL,
+  `id_parada` int(11) DEFAULT NULL,
+  `estado` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `hora` time DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -58,7 +64,7 @@ CREATE TABLE `bus_parada` (
 
 CREATE TABLE `chat` (
   `id_chat` int(11) NOT NULL,
-  `id_usuario` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
   `in_message` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `out_message` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `msg_date` date DEFAULT NULL,
@@ -75,10 +81,10 @@ CREATE TABLE `chat` (
 
 CREATE TABLE `informacion` (
   `id_informacion` int(11) NOT NULL,
-  `informacion` varchar(3500) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `texto` varchar(3500) COLLATE utf8_spanish_ci DEFAULT NULL,
   `fecha` date DEFAULT NULL,
   `imagen` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `id_tipoi` int(11) NOT NULL,
+  `id_tipoi` int(11) DEFAULT NULL,
   `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_date` date DEFAULT NULL
@@ -92,12 +98,10 @@ CREATE TABLE `informacion` (
 
 CREATE TABLE `parada` (
   `id_parada` int(11) NOT NULL,
-  `viaj_suben` int(11) DEFAULT NULL,
-  `viaj_bajan` int(11) DEFAULT NULL,
   `latitud` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
   `longitud` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
   `calle` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `id_ruta` int(11) NOT NULL,
+  `id_ruta` int(11) DEFAULT NULL,
   `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_date` date DEFAULT NULL
@@ -113,8 +117,8 @@ CREATE TABLE `ruta` (
   `id_ruta` int(11) NOT NULL,
   `inicio` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `fin` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `id_pdf` int(10) NOT NULL,
-  `id_video` int(10) NOT NULL,
+  `id_img` int(10) DEFAULT NULL,
+  `id_video` int(10) DEFAULT NULL,
   `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_date` date DEFAULT NULL
@@ -144,7 +148,24 @@ CREATE TABLE `tarifa` (
 
 CREATE TABLE `tipo_informacion` (
   `id_tipoi` int(10) NOT NULL,
-  `informacion` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL
+  `tipo` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `tipo_usuario`
+--
+
+CREATE TABLE `tipo_usuario` (
+  `id_tipou` int(10) NOT NULL,
+  `tipo` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `tx_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;
 
 -- --------------------------------------------------------
@@ -158,7 +179,7 @@ CREATE TABLE `ubicacion` (
   `latitud` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
   `longitud` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
   `calle` varchar(500) COLLATE utf8_spanish_ci DEFAULT NULL,
-  `id_usuario` int(11) NOT NULL,
+  `id_usuario` int(11) DEFAULT NULL,
   `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_date` date DEFAULT NULL
@@ -189,7 +210,10 @@ CREATE TABLE `usuario` (
   `id_usuario` int(11) NOT NULL,
   `nombre` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `apellido` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `correo` varchar(200) COLLATE utf8_spanish_ci DEFAULT NULL,
   `telefono` int(30) DEFAULT NULL,
+  `fecha_nac` date DEFAULT NULL,
+  `id_tipou` int(11) DEFAULT NULL,
   `tx_user` varchar(50) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_host` varchar(100) COLLATE utf8_spanish_ci DEFAULT NULL,
   `tx_date` date DEFAULT NULL
@@ -209,7 +233,7 @@ ALTER TABLE `bus`
 -- Indices de la tabla `bus_parada`
 --
 ALTER TABLE `bus_parada`
-  ADD PRIMARY KEY (`id_buspar`,`id_bus`,`id_parada`),
+  ADD PRIMARY KEY (`id_buspar`),
   ADD KEY `id_bus` (`id_bus`),
   ADD KEY `id_parada` (`id_parada`);
 
@@ -217,29 +241,29 @@ ALTER TABLE `bus_parada`
 -- Indices de la tabla `chat`
 --
 ALTER TABLE `chat`
-  ADD PRIMARY KEY (`id_chat`,`id_usuario`),
+  ADD PRIMARY KEY (`id_chat`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
 -- Indices de la tabla `informacion`
 --
 ALTER TABLE `informacion`
-  ADD PRIMARY KEY (`id_informacion`,`id_tipoi`),
+  ADD PRIMARY KEY (`id_informacion`),
   ADD KEY `id_tipoi` (`id_tipoi`);
 
 --
 -- Indices de la tabla `parada`
 --
 ALTER TABLE `parada`
-  ADD PRIMARY KEY (`id_parada`,`id_ruta`),
+  ADD PRIMARY KEY (`id_parada`),
   ADD KEY `id_ruta` (`id_ruta`);
 
 --
 -- Indices de la tabla `ruta`
 --
 ALTER TABLE `ruta`
-  ADD PRIMARY KEY (`id_ruta`,`id_pdf`,`id_video`),
-  ADD KEY `id_pdf` (`id_pdf`),
+  ADD PRIMARY KEY (`id_ruta`),
+  ADD KEY `id_img` (`id_img`),
   ADD KEY `id_video` (`id_video`);
 
 --
@@ -255,10 +279,16 @@ ALTER TABLE `tipo_informacion`
   ADD PRIMARY KEY (`id_tipoi`);
 
 --
+-- Indices de la tabla `tipo_usuario`
+--
+ALTER TABLE `tipo_usuario`
+  ADD PRIMARY KEY (`id_tipou`);
+
+--
 -- Indices de la tabla `ubicacion`
 --
 ALTER TABLE `ubicacion`
-  ADD PRIMARY KEY (`id_ubicacion`,`id_usuario`),
+  ADD PRIMARY KEY (`id_ubicacion`),
   ADD KEY `id_usuario` (`id_usuario`);
 
 --
@@ -271,7 +301,8 @@ ALTER TABLE `url`
 -- Indices de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  ADD PRIMARY KEY (`id_usuario`);
+  ADD PRIMARY KEY (`id_usuario`),
+  ADD KEY `id_tipou` (`id_tipou`);
 
 --
 -- AUTO_INCREMENT de las tablas volcadas
@@ -326,6 +357,12 @@ ALTER TABLE `tipo_informacion`
   MODIFY `id_tipoi` int(10) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `tipo_usuario`
+--
+ALTER TABLE `tipo_usuario`
+  MODIFY `id_tipou` int(10) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT de la tabla `ubicacion`
 --
 ALTER TABLE `ubicacion`
@@ -376,7 +413,7 @@ ALTER TABLE `parada`
 -- Filtros para la tabla `ruta`
 --
 ALTER TABLE `ruta`
-  ADD CONSTRAINT `ruta_ibfk_1` FOREIGN KEY (`id_pdf`) REFERENCES `url` (`id_url`),
+  ADD CONSTRAINT `ruta_ibfk_1` FOREIGN KEY (`id_img`) REFERENCES `url` (`id_url`),
   ADD CONSTRAINT `ruta_ibfk_2` FOREIGN KEY (`id_video`) REFERENCES `url` (`id_url`);
 
 --
@@ -384,6 +421,12 @@ ALTER TABLE `ruta`
 --
 ALTER TABLE `ubicacion`
   ADD CONSTRAINT `ubicacion_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuario` (`id_usuario`);
+
+--
+-- Filtros para la tabla `usuario`
+--
+ALTER TABLE `usuario`
+  ADD CONSTRAINT `usuario_ibfk_1` FOREIGN KEY (`id_tipou`) REFERENCES `tipo_usuario` (`id_tipou`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

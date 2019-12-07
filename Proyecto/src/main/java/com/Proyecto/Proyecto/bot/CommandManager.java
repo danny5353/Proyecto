@@ -37,17 +37,15 @@ public class CommandManager {
                 // Create a keyboard row
                 KeyboardRow row = new KeyboardRow();
                 // Set each button, you can also use KeyboardButton objects if you need something else than text
-                row.add("\uD83D\uDE8C Ruta Chasquipampa");
-                row.add("\uD83D\uDE8C Ruta Chasquipampa");
-
-
+                row.add("\uD83D\uDE8C ¿Qué rutas existen?");
+                row.add("\uD83D\uDE8C ¿Dónde está mi Puma?");
                 // Add the first row to the keyboard
                 keyboard.add(row);
                 // Create another keyboard row
                 row = new KeyboardRow();
                 // Set each button for the second line
-                row.add("\uD83D\uDCB0 Tarifario");
-                row.add(" ⏰ Horarios");
+                row.add("\uD83D\uDCB0  ¿Qué bus debo tomar?");
+                row.add("Información");
 
                 // Add the second row to the keyboard
                 keyboard.add(row);
