@@ -66,9 +66,9 @@ public class Chat implements Serializable {
     @Column(name = "tx_date")
     @Temporal(TemporalType.DATE)
     private Date txDate;
-    @JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
+    @JoinColumn(name = "id_userbot", referencedColumnName = "id_userbot")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Usuario idUsuario;
+    private UserBot idUserbot;
 
     public Chat() {
     }
@@ -133,12 +133,12 @@ public class Chat implements Serializable {
         this.txDate = txDate;
     }
 
-    public Usuario getIdUsuario() {
-        return idUsuario;
+    public UserBot getIdUserbot() {
+        return idUserbot;
     }
 
-    public void setIdUsuario(Usuario idUsuario) {
-        this.idUsuario = idUsuario;
+    public void setIdUserbot(UserBot idUserbot) {
+        this.idUserbot = idUserbot;
     }
 
     @Override

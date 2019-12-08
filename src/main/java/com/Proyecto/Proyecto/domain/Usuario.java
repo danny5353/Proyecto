@@ -42,6 +42,7 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "Usuario.findByCorreo", query = "SELECT u FROM Usuario u WHERE u.correo = :correo"),
     @NamedQuery(name = "Usuario.findByTelefono", query = "SELECT u FROM Usuario u WHERE u.telefono = :telefono"),
     @NamedQuery(name = "Usuario.findByFechaNac", query = "SELECT u FROM Usuario u WHERE u.fechaNac = :fechaNac"),
+    @NamedQuery(name = "Usuario.findByEstado", query = "SELECT u FROM Usuario u WHERE u.estado = :estado"),
     @NamedQuery(name = "Usuario.findByTxUser", query = "SELECT u FROM Usuario u WHERE u.txUser = :txUser"),
     @NamedQuery(name = "Usuario.findByTxHost", query = "SELECT u FROM Usuario u WHERE u.txHost = :txHost"),
     @NamedQuery(name = "Usuario.findByTxDate", query = "SELECT u FROM Usuario u WHERE u.txDate = :txDate")})
@@ -67,6 +68,8 @@ public class Usuario implements Serializable {
     @Column(name = "fecha_nac")
     @Temporal(TemporalType.DATE)
     private Date fechaNac;
+    @Column(name = "estado")
+    private Integer estado;
     @Size(max = 50)
     @Column(name = "tx_user")
     private String txUser;
@@ -79,7 +82,7 @@ public class Usuario implements Serializable {
     @OneToMany(mappedBy = "idUsuario", fetch = FetchType.LAZY)
     private List<Ubicacion> ubicacionList;
     @OneToMany(mappedBy = "idUsuario", fetch = FetchType.LAZY)
-    private List<Chat> chatList;
+    private List<UserBot> userBotList;
     @JoinColumn(name = "id_tipou", referencedColumnName = "id_tipou")
     @ManyToOne(fetch = FetchType.LAZY)
     private TipoUsuario idTipou;
@@ -139,6 +142,14 @@ public class Usuario implements Serializable {
         this.fechaNac = fechaNac;
     }
 
+    public Integer getEstado() {
+        return estado;
+    }
+
+    public void setEstado(Integer estado) {
+        this.estado = estado;
+    }
+
     public String getTxUser() {
         return txUser;
     }
@@ -173,12 +184,12 @@ public class Usuario implements Serializable {
     }
 
     @XmlTransient
-    public List<Chat> getChatList() {
-        return chatList;
+    public List<UserBot> getUserBotList() {
+        return userBotList;
     }
 
-    public void setChatList(List<Chat> chatList) {
-        this.chatList = chatList;
+    public void setUserBotList(List<UserBot> userBotList) {
+        this.userBotList = userBotList;
     }
 
     public TipoUsuario getIdTipou() {
