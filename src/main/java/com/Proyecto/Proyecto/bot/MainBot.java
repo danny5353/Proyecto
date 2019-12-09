@@ -1,5 +1,6 @@
 package com.Proyecto.Proyecto.bot;
 
+import com.Proyecto.Proyecto.bl.BotBl;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -15,10 +16,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainBot  extends TelegramLongPollingBot {
+    BotBl botBl;
 
+    public MainBot(BotBl UsuarioBl) {
+        this.botBl=UsuarioBl;
+    }
     @Override
     public void onUpdateReceived(final  Update update) {
-        CommandManager comand = new CommandManager();
+     /*   CommandManager comand = new CommandManager();
         final String messageTextReceived = update.getMessage().getText();
         // Se obtiene el id de chat del usuario
         final long chatId = update.getMessage().getChatId();
@@ -116,6 +121,23 @@ public class MainBot  extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }*/
+
+        System.out.println(update);
+        update.getMessage().getFrom().getId();
+        if (update.hasMessage() && update.getMessage().hasText()) {
+            List<String> messages = botBl.processUpdate(update);
+            for(String messageText: messages) {
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                        .setChatId(update.getMessage().getChatId())
+                        .setText(messageText);
+                try {
+                    this.execute(message);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
     @Override
     public String getBotUsername() {
@@ -128,7 +150,7 @@ public class MainBot  extends TelegramLongPollingBot {
         // Se devuelve el token que nos generó el BotFather de nuestro bot
         return "834962965:AAG0S_TVvZrGtzE5hYVGbpSevfoiAGsuy7k";
     }
-}
+
   /*  @Override
     public String getBotUsername() {
         return "Pumachat2";
