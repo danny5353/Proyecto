@@ -16,14 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainBot  extends TelegramLongPollingBot {
-    BotBl botBl;
+   BotBl botBl;
 
     public MainBot(BotBl UsuarioBl) {
-        this.botBl=UsuarioBl;
+        this.botBl = UsuarioBl;
     }
+
+    public MainBot() {
+
+    }
+
     @Override
-    public void onUpdateReceived(final  Update update) {
-     /*   CommandManager comand = new CommandManager();
+    public void onUpdateReceived(final Update update) {
+       CommandManager comand = new CommandManager();
         final String messageTextReceived = update.getMessage().getText();
         // Se obtiene el id de chat del usuario
         final long chatId = update.getMessage().getChatId();
@@ -121,13 +126,13 @@ public class MainBot  extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }*/
+    }
 
-        System.out.println(update);
+     /*   System.out.println(update);
         update.getMessage().getFrom().getId();
         if (update.hasMessage() && update.getMessage().hasText()) {
             List<String> messages = botBl.processUpdate(update);
-            for(String messageText: messages) {
+            for (String messageText : messages) {
                 SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
                         .setChatId(update.getMessage().getChatId())
                         .setText(messageText);
@@ -138,7 +143,8 @@ public class MainBot  extends TelegramLongPollingBot {
                 }
             }
         }
-    }
+    }*/
+
     @Override
     public String getBotUsername() {
         // Se devuelve el nombre que dimos al bot al crearlo con el BotFather
@@ -150,7 +156,7 @@ public class MainBot  extends TelegramLongPollingBot {
         // Se devuelve el token que nos generó el BotFather de nuestro bot
         return "834962965:AAG0S_TVvZrGtzE5hYVGbpSevfoiAGsuy7k";
     }
-
+}
   /*  @Override
     public String getBotUsername() {
         return "Pumachat2";
