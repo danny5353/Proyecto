@@ -8,7 +8,9 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
@@ -126,6 +128,62 @@ public class MainBot  extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
+    }
+
+    public void response(int conversation, Update update) {
+        List<String> responses = new ArrayList<>();
+
+        ReplyKeyboardMarkup rkm = null;
+        KeyboardButton kb = null;
+        switch (conversation) {
+
+//Registro inicial
+
+            case 1:
+                responses.add("Bienvenido a PumaChat!");
+                responses.add("Para comenzar necesitamos algunos datos personales");
+                responses.add("Ingresa tu nombre");
+                break;
+            case 2:
+                responses.add("Ingresa tu apellido");
+                break;
+            case 3:
+                responses.add("Ingresa tu fecha de nacimiento");
+                break;
+        }
+        for(String messageText: responses) {
+            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                    .setChatId(update.getMessage().getChatId())
+                    .setText(messageText);
+            if(rkm!=null){
+                message.setReplyMarkup(rkm);
+            }else{
+                ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+                message.setReplyMarkup(keyboardMarkupRemove);
+            }
+            try {
+                this.execute(message);
+
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private ReplyKeyboardMarkup createOkMenu(){
+        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+
+        List<KeyboardRow> keyboard = new ArrayList<>();
+        KeyboardRow row = new KeyboardRow();
+        row.add("OK");
+        // Add the first row to the keyboard
+        keyboard.add(row);
+        // Create another keyboard row
+        // Set the keyboard to the markup
+        keyboardMarkup.setKeyboard(keyboard);
+        // Add it to the message
+        return keyboardMarkup;
+
     }
 
      /*   System.out.println(update);
