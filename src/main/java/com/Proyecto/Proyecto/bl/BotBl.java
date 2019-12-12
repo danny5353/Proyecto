@@ -12,8 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,15 +36,6 @@ public class BotBl {
         UserBot UserBot = initUserBot(update.getMessage().getFrom());
         continueChatWithUser(update, UserBot, chatResponse);
         return chatResponse;
-     /*   // Si es la primera vez pedir una imagen para su perfil
-        JMenu result;
-        if () {
-          LOGGER.info("Primer inicio de sesion para: {} ",update.getMessage().getFrom() );
-           result.add("Por favor ingrese una imagen para su foto de perfil");
-       } else { // Mostrar el menu de opciones
-           LOGGER.info("Dando bienvenida a: {} ",update.getMessage().getFrom() );
-            result.add("Bienvenido al Bot");
-     }*/
     }
 
 
@@ -87,13 +76,6 @@ public class BotBl {
         // Agregamos la respuesta al chatResponse.
         chatResponse.add(response);
     }
-
-    /**
-     * Si es la primera vez que el usuario conversa con el bot, se guarda su información en BBDD.
-     * A futuro ademas de guardar la información captura el ultimo estado de la conversación.
-     * @param userbot
-     * @return first time login
-     */
 
     private UserBot initUserBot(User userbot) {
         UserBot UserBot = UserBotRepository.findByBotUserId(userbot.getId().toString());
