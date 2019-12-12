@@ -46,7 +46,7 @@ public class CommandManager {
                 // Set each button for the second line
                 row.add("\uD83D\uDCB0  ¿Qué bus debo tomar?");
                 row.add("Información");
-
+                row.add("Registrarme");
                 // Add the second row to the keyboard
                 keyboard.add(row);
                 // Set the keyboard to the markup

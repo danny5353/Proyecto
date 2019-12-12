@@ -12,7 +12,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
    /* Usuario findByTelegramId(int telegramId);
     Usuario save(Usuario person);*/
-
-   List<Usuario> findAllByStatus(int status);
+   List<Usuario> findByTelegramId(int telegramId);
+   //List<Usuario> findAllByStatus(int status);
   //  Usuario findByTelegramId(Integer id);
 }
