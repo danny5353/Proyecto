@@ -34,13 +34,13 @@ public class UsuarioBl {
         }
     }
 
-    public List<UsuarioDto> findAllPeople() {
-        List<UsuarioDto> personDtoList = new ArrayList<>();
+  /* public List<UsuarioDto> findAllPeople() {
+        List<UsuarioDto> usuarioDtoList = new ArrayList<>();
         for (Usuario Usuario:UsuarioRepository.findAllByStatus(Status.ACTIVE.getStatus())) {
-            personDtoList.add(new UsuarioDto(Usuario));
+            usuarioDtoList.add(new UsuarioDto(Usuario));
         }
-        return personDtoList;
-    }
+        return usuarioDtoList;
+    }*/
 
    /* UsuarioRepository repository;
     @Autowired
@@ -61,6 +61,7 @@ public class UsuarioBl {
     public Usuario findByPersonId(Integer id){
         return (Usuario) repository.findById(id).get();
     }
+
     public Usuario create(Usuario person) {
 
         return repository.save(person);

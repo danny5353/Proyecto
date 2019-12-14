@@ -1,6 +1,8 @@
 package com.Proyecto.Proyecto.bot;
 
+import com.Proyecto.Proyecto.api.UsuarioController;
 import com.Proyecto.Proyecto.bl.BotBl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
@@ -18,173 +20,220 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainBot  extends TelegramLongPollingBot {
-   BotBl botBl;
+    private UsuarioController UsuarioController;
+   /* BotBl botBl;
 
-    public MainBot(BotBl UsuarioBl) {
+   public MainBot(BotBl UsuarioBl) {
         this.botBl = UsuarioBl;
-    }
+    }*/
 
+    @Autowired
+    UsuarioController usuarioController;
+    public MainBot(com.Proyecto.Proyecto.api.UsuarioController usuarioController) {
+        this.UsuarioController = usuarioController;
+    }
     public MainBot() {
 
     }
 
-    @Override
-    public void onUpdateReceived(final Update update) {
-       CommandManager comand = new CommandManager();
-        final String messageTextReceived = update.getMessage().getText();
-        // Se obtiene el id de chat del usuario
-        final long chatId = update.getMessage().getChatId();
-        final String nombre = update.getMessage().getFrom().getFirstName();
+    String nombre;
+    String apellido;
+    String correo;
+    String telefono;
+    String fechaNac;
+    int idtelegram;
+     @Override
+     public void onUpdateReceived(final Update update) {
+             CommandManager command = new CommandManager();
+             final String messageTextReceived = update.getMessage().getText();
+             // Se obtiene el id de chat del usuario
+             final long chatId = update.getMessage().getChatId();
+             //  final String nombre = update.getMessage().getFrom().getFirstName();
 
+             SendMessage message = new SendMessage();
+             if (messageTextReceived.equals("/start")) {
+                 CommandManager commandManager = new CommandManager();
+                 SendMessage keyboard = commandManager.CreateKeyboard("/start", chatId);
 
-        if (messageTextReceived.equals("/start")){
-            CommandManager commandManager = new CommandManager();
-            SendMessage keyboard = commandManager.CreateKeyboard("/start", chatId);
-            try {
-                // Se envía el mensaje
-                execute(keyboard);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
-        }
-        SendPhoto msg = new SendPhoto().setChatId(chatId);
+                 try {
+                     // Se envía el mensaje
+                     execute(keyboard);
+                 } catch (TelegramApiException e) {
+                     e.printStackTrace();
+                 }
+             }
+             //SendPhoto msg = new SendPhoto().setChatId(chatId);
 
-        switch (messageTextReceived){
-            case "\uD83D\uDE8C ¿Qué rutas existen?":
-                if (update.hasMessage() && update.getMessage().hasText()) {
-                SendMessage  message = new SendMessage().setChatId(chatId).setText("¿Qué rutas existen?");
-                InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-                List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
-                rowInline1.add(new InlineKeyboardButton().setText("Inca Llojeta").setCallbackData("Inca Llojeta"));
-                rowInline1.add(new InlineKeyboardButton().setText("Villa Salome").setCallbackData("Villa Salome"));
-                rowsInline.add(rowInline1);
-                List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                rowInline2.add(new InlineKeyboardButton().setText("Chasquipampa").setCallbackData("Chasquipampa"));
-                rowInline2.add(new InlineKeyboardButton().setText("Caja Ferriviaria").setCallbackData("Caja Ferriviaria"));
-                rowsInline.add(rowInline2);
-                List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
-                rowInline3.add(new InlineKeyboardButton().setText("Integradora").setCallbackData("Integradora"));
-                rowInline3.add(new InlineKeyboardButton().setText("Irpavi II").setCallbackData("Irpavi II"));
-                rowInline3.add(new InlineKeyboardButton().setText("Achumani").setCallbackData("Achumani"));
-                rowsInline.add(rowInline3);
-                markupInline.setKeyboard(rowsInline);
-                message.setReplyMarkup(markupInline);
-                try {
-                    execute(message); //Sending our message object to user
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-                } else if (update.hasCallbackQuery()) {
-                    // Set variables
-                    String call_data = update.getCallbackQuery().getData();
-                    long message_id = update.getCallbackQuery().getMessage().getMessageId();
-                    long chat_id = update.getCallbackQuery().getMessage().getChatId();
-                    if (call_data.equals("Chasquipampa")) {
+             switch (messageTextReceived) {
+                 case "\uD83D\uDE8C ¿Qué rutas existen?":
+                     if (update.hasMessage() && update.getMessage().hasText()) {
+                         message = new SendMessage().setChatId(chatId).setText("¿Qué rutas existen?");
+                         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
+                         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
+                         List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
+                         rowInline1.add(new InlineKeyboardButton().setText("Inca Llojeta").setCallbackData("Inca Llojeta"));
+                         rowInline1.add(new InlineKeyboardButton().setText("Villa Salome").setCallbackData("Villa Salome"));
+                         rowsInline.add(rowInline1);
+                         List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
+                         rowInline2.add(new InlineKeyboardButton().setText("Chasquipampa").setCallbackData("Chasquipampa"));
+                         rowInline2.add(new InlineKeyboardButton().setText("Caja Ferriviaria").setCallbackData("Caja Ferriviaria"));
+                         rowsInline.add(rowInline2);
+                         List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
+                         rowInline3.add(new InlineKeyboardButton().setText("Integradora").setCallbackData("Integradora"));
+                         rowInline3.add(new InlineKeyboardButton().setText("Irpavi II").setCallbackData("Irpavi II"));
+                         rowInline3.add(new InlineKeyboardButton().setText("Achumani").setCallbackData("Achumani"));
+                         rowsInline.add(rowInline3);
+                         markupInline.setKeyboard(rowsInline);
+                         message.setReplyMarkup(markupInline);
+                         try {
+                             execute(message); //Sending our message object to user
+                         } catch (TelegramApiException e) {
+                             e.printStackTrace();
+                         }
+                     } else if (update.hasCallbackQuery()) {
+                         // Set variables
+                         String call_data = update.getCallbackQuery().getData();
+                         long message_id = update.getCallbackQuery().getMessage().getMessageId();
+                         long chat_id = update.getCallbackQuery().getMessage().getChatId();
+                    /*if (call_data.equals("Chasquipampa")) {
                         msg.setPhoto("AgADAQADpagxG3eDcEazYQczT2q0cn3hawYABAEAAwIAA3kAA2dpAQABFgQ").setCaption("Ruta Chasquipampa - PUC");
                         try {
                             execute(msg);
                         } catch (TelegramApiException e) {
                             e.printStackTrace();
                         }
-                    }
-            }
-                break;
-            case "\uD83D\uDE8C ¿Dónde está mi Puma?":
+                    }*/
+                     }
+                     break;
+                 case "\uD83D\uDE8C ¿Dónde está mi Puma?":
+                     if (messageTextReceived.equals("\uD83D\uDE8C ¿Dónde está mi Puma?")) {
+                         CommandManager commandManager = new CommandManager();
+                         SendMessage keyboard = commandManager.CreateKeyboard("\uD83D\uDE8C ¿Dónde está mi Puma?", chatId);
+                         try {
+                             // Se envía el mensaje
+                             execute(keyboard);
+                         } catch (TelegramApiException e) {
+                             e.printStackTrace();
+                         }
+                     }
+                     break;
 
-                break;
-            case "\uD83D\uDCB0 ¿Qué bus debo tomar?":
+                 case "\uD83D\uDCB0 ¿Qué bus debo tomar?":
 
-                break;
-           case "Información":
-               SendMessage  message = new SendMessage().setChatId(chatId).setText("Información");
-               InlineKeyboardMarkup  markupInline = new InlineKeyboardMarkup();
-               List<List<InlineKeyboardButton>>  rowsInline = new ArrayList<>();
-               List<InlineKeyboardButton>  rowInline1 = new ArrayList<>();
-                rowInline1.add(new InlineKeyboardButton().setText("Noticias").setCallbackData("Noticias"));
-                rowInline1.add(new InlineKeyboardButton().setText("Objetos Perdidos").setCallbackData("Objetos Perdidos"));
-                rowsInline.add(rowInline1);
-               List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                rowInline2.add(new InlineKeyboardButton().setText("Comunicado").setCallbackData("Comunicado"));
-                rowInline2.add(new InlineKeyboardButton().setText("Horarios").setCallbackData("Horarios"));
-                rowsInline.add(rowInline2);
-               List<InlineKeyboardButton>  rowInline3 = new ArrayList<>();
-                rowInline3.add(new InlineKeyboardButton().setText("Tarifario").setCallbackData("Tarifario"));
-                // Set the keyboard to the markup
-                rowsInline.add(rowInline3);
-                // Add it to the message
-                markupInline.setKeyboard(rowsInline);
-                message.setReplyMarkup(markupInline);
-                try {
-                    execute(message); //Sending our message object to user
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-                break;
+                     break;
+                 case "Registrarme":
+                     message = new SendMessage().setChatId(chatId).setText("Registrarme");
+                     switch (messageTextReceived) {
+                         case "Ingresa Tu nombre":
+                             message.setText("Favor de ingresar tu nombre");
+                             nombre = update.getMessage().getText();
+                             break;
+                     }
 
-        }
-        try {
-            execute(msg); // Call method to send the photo with caption
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
+                     message.setText("Favor de ingresa tu apellido materno y paterno");
+                     apellido = update.getMessage().getText();
+                     message.setText("Favor de ingresar tu correo electronico");
+                     correo = update.getMessage().getText();
+                     message.setText("Favor ingresa tu fecha de nacimiento aa/mm/dd");
+                     fechaNac = update.getMessage().getText();
+                     message.setText("Favor ingrese su numero de telefono");
+                     telefono = update.getMessage().getText();
+                     System.out.println(nombre + apellido + correo + fechaNac + telefono);
+                     message.setChatId(update.getMessage().getChatId());
 
-    public void response(int conversation, Update update) {
-        List<String> responses = new ArrayList<>();
+                     try {
+                         execute(message);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+                 case "Información":
 
-        ReplyKeyboardMarkup rkm = null;
-        KeyboardButton kb = null;
-        switch (conversation) {
+                     if (messageTextReceived.equals("Información")) {
+                         CommandManager commandManager = new CommandManager();
+                         SendMessage keyboard = commandManager.CreateKeyboard("Información", chatId);
+                         try {
+                             // Se envía el mensaje
+                             execute(keyboard);
+                         } catch (TelegramApiException e) {
+                             e.printStackTrace();
+                         }
+                         if (message.equals("Noticias")){
+                             message = new SendMessage().setText("Noticias");
+                             message.setText("llalalla");
+
+                             try {
+                                 // Se envía el mensaje
+                                 execute(message);
+                             } catch (TelegramApiException e) {
+                                 e.printStackTrace();
+                             }
+                         }
+                     }
+
+                     break;
+             }
+      }
+
+
+
+
+        public void response ( int conversation, Update update){
+            List<String> responses = new ArrayList<>();
+
+            ReplyKeyboardMarkup rkm = null;
+            KeyboardButton kb = null;
+            switch (conversation) {
 
 //Registro inicial
 
-            case 1:
-                responses.add("Bienvenido a PumaChat!");
-                responses.add("Para comenzar necesitamos algunos datos personales");
-                responses.add("Ingresa tu nombre");
-                break;
-            case 2:
-                responses.add("Ingresa tu apellido");
-                break;
-            case 3:
-                responses.add("Ingresa tu fecha de nacimiento");
-                break;
-        }
-        for(String messageText: responses) {
-            SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                    .setChatId(update.getMessage().getChatId())
-                    .setText(messageText);
-            if(rkm!=null){
-                message.setReplyMarkup(rkm);
-            }else{
-                ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
-                message.setReplyMarkup(keyboardMarkupRemove);
+                case 1:
+                    responses.add("Bienvenido a PumaChat!");
+                    responses.add("Para comenzar necesitamos algunos datos personales");
+                    responses.add("Ingresa tu nombre");
+                    break;
+                case 2:
+                    responses.add("Ingresa tu apellido");
+                    break;
+                case 3:
+                    responses.add("Ingresa tu fecha de nacimiento");
+                    break;
             }
-            try {
-                this.execute(message);
+            for (String messageText : responses) {
+                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
+                        .setChatId(update.getMessage().getChatId())
+                        .setText(messageText);
+                if (rkm != null) {
+                    message.setReplyMarkup(rkm);
+                } else {
+                    ReplyKeyboardRemove keyboardMarkupRemove = new ReplyKeyboardRemove();
+                    message.setReplyMarkup(keyboardMarkupRemove);
+                }
+                try {
+                    this.execute(message);
 
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
         }
-    }
 
-    private ReplyKeyboardMarkup createOkMenu(){
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
+        private ReplyKeyboardMarkup createOkMenu () {
+            ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
 
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-        row.add("OK");
-        // Add the first row to the keyboard
-        keyboard.add(row);
-        // Create another keyboard row
-        // Set the keyboard to the markup
-        keyboardMarkup.setKeyboard(keyboard);
-        // Add it to the message
-        return keyboardMarkup;
+            List<KeyboardRow> keyboard = new ArrayList<>();
+            KeyboardRow row = new KeyboardRow();
+            row.add("OK");
+            // Add the first row to the keyboard
+            keyboard.add(row);
+            // Create another keyboard row
+            // Set the keyboard to the markup
+            keyboardMarkup.setKeyboard(keyboard);
+            // Add it to the message
+            return keyboardMarkup;
 
-    }
+        }
+
 
      /*   System.out.println(update);
         update.getMessage().getFrom().getId();
