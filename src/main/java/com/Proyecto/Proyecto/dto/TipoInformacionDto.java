@@ -1,6 +1,7 @@
 package com.Proyecto.Proyecto.dto;
 
-import com.Proyecto.Proyecto.domain.Informacion;
+import
+        com.Proyecto.Proyecto.domain.Informacion;
 import com.Proyecto.Proyecto.domain.TipoInformacion;
 
 import java.sql.Date;
