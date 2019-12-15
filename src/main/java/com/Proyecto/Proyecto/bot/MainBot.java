@@ -285,7 +285,18 @@ UsuarioBl UsuarioBl;
             return keyboardMarkup;
 
         }
+/*codigo para usar la clase photoidentifier, para conocer el id de las imagenes
+*
+* if (update.hasMessage() && update.getMessage().hasPhoto()) {
+            PhotoIdentifier img = new PhotoIdentifier();
+            SendPhoto photomsg = img.getImageDetails(update.getMessage().getPhoto(),chatId);
 
+            try {
+                execute(photomsg); // Call method to send the photo with caption
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
+        }*/
 
     @Override
     public String getBotUsername() {
