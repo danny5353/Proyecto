@@ -112,20 +112,21 @@ UsuarioBl UsuarioBl;
                      break;
 //Intento de Registro
                  case "Cliente":
-                     message = new SendMessage().setChatId(chatId).setText("Cliente");
-                     message.setText("Favor de ingresar tu nombre");
-                     nombre = update.getMessage().getText();
-                     Usuario usuario= new Usuario();
-                     usuario.setEstado(Status.ACTIVE.getStatus());
-                     usuario.setNombre(nombre);
-                     UsuarioBl.create(usuario);
-                     message.setChatId(update.getMessage().getChatId());
-                     try {
-                         execute(message);
-                     } catch (TelegramApiException e) {
-                         e.printStackTrace();
+                     if (messageTextReceived.equals("Cliente")) {
+                         message = new SendMessage().setChatId(chatId).setText("Cliente");
+                         message.setText("Favor de ingresar tu nombre");
+                         nombre = update.getMessage().getText();
+                         Usuario usuario = new Usuario();
+                         usuario.setEstado(Status.ACTIVE.getStatus());
+                         usuario.setNombre(nombre);
+                         UsuarioBl.create(usuario);
+                         message.setChatId(update.getMessage().getChatId());
+                         try {
+                             execute(message);
+                         } catch (TelegramApiException e) {
+                             e.printStackTrace();
+                         }
                      }
-
                     /* usuario.setNombre(nombre);
                      usuario.setApellido(apellido);
                      usuario.setCorreo(correo);
