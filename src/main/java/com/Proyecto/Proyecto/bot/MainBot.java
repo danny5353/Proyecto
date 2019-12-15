@@ -223,6 +223,14 @@ UsuarioBl UsuarioBl;
                          e.printStackTrace();
                      }
                      break;
+                 case "Chasquipampa":
+                     msg.setPhoto("AgADAQADQagxG5-uuEc1w6adnja4QK4fFDAABAEAAwIAA3cAAx0kBQABFgQ").setCaption("Ruta Inca Chasquipampa - PUC \n https://youtu.be/gNhC_uRW1yk ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
 
              }
       }

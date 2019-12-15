@@ -43,6 +43,8 @@ public class CommandManager {
 
 
     public SendMessage CreateKeyboard(String command,long  idtelegram){
+
+
         SendMessage message = new SendMessage().setChatId(idtelegram);
         // Create ReplyKeyboardMarkup object
         ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
@@ -109,7 +111,7 @@ public class CommandManager {
                 row.add("Chasquipampa");
                 keyboard.add(row);
                 row = new KeyboardRow();
-                row.add("Caja Ferriviaria");
+                row.add("Caja Ferroviaria");
                 row.add("Integradora");
                 row.add("Irpavi II");
                 row.add("Achumani");
