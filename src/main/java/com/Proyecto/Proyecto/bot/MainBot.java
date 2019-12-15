@@ -1,17 +1,16 @@
 package com.Proyecto.Proyecto.bot;
 
-import com.Proyecto.Proyecto.api.UsuarioController;
-import com.Proyecto.Proyecto.bl.BotBl;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import com.Proyecto.Proyecto.bl.UsuarioBl;
+import com.Proyecto.Proyecto.dao.UsuarioRepository;
+import com.Proyecto.Proyecto.domain.Usuario;
+import com.Proyecto.Proyecto.dto.Status;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardButton;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
@@ -20,18 +19,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainBot  extends TelegramLongPollingBot {
-    private UsuarioController UsuarioController;
-   /* BotBl botBl;
+   /* private UsuarioController UsuarioController;
+    BotBl botBl;
 
    public MainBot(BotBl UsuarioBl) {
         this.botBl = UsuarioBl;
     }*/
-
-    @Autowired
-    UsuarioController usuarioController;
-    public MainBot(com.Proyecto.Proyecto.api.UsuarioController usuarioController) {
-        this.UsuarioController = usuarioController;
+UsuarioBl UsuarioBl;
+    public MainBot( UsuarioBl UsuarioBl) {
+        this. UsuarioBl = UsuarioBl;
     }
+  private UsuarioRepository UsuarioRepository;
+
+    public MainBot(UsuarioRepository UsuarioRepository) {
+        this.UsuarioRepository = UsuarioRepository;
+    }
+
     public MainBot() {
 
     }
@@ -62,47 +65,21 @@ public class MainBot  extends TelegramLongPollingBot {
                      e.printStackTrace();
                  }
              }
-             //SendPhoto msg = new SendPhoto().setChatId(chatId);
+             SendPhoto msg = new SendPhoto().setChatId(chatId);
 
              switch (messageTextReceived) {
                  case "\uD83D\uDE8C ¿Qué rutas existen?":
                      if (update.hasMessage() && update.getMessage().hasText()) {
-                         message = new SendMessage().setChatId(chatId).setText("¿Qué rutas existen?");
-                         InlineKeyboardMarkup markupInline = new InlineKeyboardMarkup();
-                         List<List<InlineKeyboardButton>> rowsInline = new ArrayList<>();
-                         List<InlineKeyboardButton> rowInline1 = new ArrayList<>();
-                         rowInline1.add(new InlineKeyboardButton().setText("Inca Llojeta").setCallbackData("Inca Llojeta"));
-                         rowInline1.add(new InlineKeyboardButton().setText("Villa Salome").setCallbackData("Villa Salome"));
-                         rowsInline.add(rowInline1);
-                         List<InlineKeyboardButton> rowInline2 = new ArrayList<>();
-                         rowInline2.add(new InlineKeyboardButton().setText("Chasquipampa").setCallbackData("Chasquipampa"));
-                         rowInline2.add(new InlineKeyboardButton().setText("Caja Ferriviaria").setCallbackData("Caja Ferriviaria"));
-                         rowsInline.add(rowInline2);
-                         List<InlineKeyboardButton> rowInline3 = new ArrayList<>();
-                         rowInline3.add(new InlineKeyboardButton().setText("Integradora").setCallbackData("Integradora"));
-                         rowInline3.add(new InlineKeyboardButton().setText("Irpavi II").setCallbackData("Irpavi II"));
-                         rowInline3.add(new InlineKeyboardButton().setText("Achumani").setCallbackData("Achumani"));
-                         rowsInline.add(rowInline3);
-                         markupInline.setKeyboard(rowsInline);
-                         message.setReplyMarkup(markupInline);
-                         try {
-                             execute(message); //Sending our message object to user
-                         } catch (TelegramApiException e) {
-                             e.printStackTrace();
+                         if (messageTextReceived.equals("\uD83D\uDE8C ¿Qué rutas existen?")) {
+                             CommandManager commandManager = new CommandManager();
+                             SendMessage keyboard = commandManager.CreateKeyboard("\uD83D\uDE8C ¿Qué rutas existen?", chatId);
+                             try {
+                                 // Se envía el mensaje
+                                 execute(keyboard);
+                             } catch (TelegramApiException e) {
+                                 e.printStackTrace();
+                             }
                          }
-                     } else if (update.hasCallbackQuery()) {
-                         // Set variables
-                         String call_data = update.getCallbackQuery().getData();
-                         long message_id = update.getCallbackQuery().getMessage().getMessageId();
-                         long chat_id = update.getCallbackQuery().getMessage().getChatId();
-                    /*if (call_data.equals("Chasquipampa")) {
-                        msg.setPhoto("AgADAQADpagxG3eDcEazYQczT2q0cn3hawYABAEAAwIAA3kAA2dpAQABFgQ").setCaption("Ruta Chasquipampa - PUC");
-                        try {
-                            execute(msg);
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                    }*/
                      }
                      break;
                  case "\uD83D\uDE8C ¿Dónde está mi Puma?":
@@ -122,33 +99,43 @@ public class MainBot  extends TelegramLongPollingBot {
 
                      break;
                  case "Registrarme":
-                     message = new SendMessage().setChatId(chatId).setText("Registrarme");
-                     switch (messageTextReceived) {
-                         case "Ingresa Tu nombre":
-                             message.setText("Favor de ingresar tu nombre");
-                             nombre = update.getMessage().getText();
-                             break;
+                     if (messageTextReceived.equals("Registrarme")) {
+                         CommandManager commandManager = new CommandManager();
+                         SendMessage keyboard = commandManager.CreateKeyboard("Registrarme", chatId);
+                         try {
+                             // Se envía el mensaje
+                             execute(keyboard);
+                         } catch (TelegramApiException e) {
+                             e.printStackTrace();
+                         }
                      }
-
-                     message.setText("Favor de ingresa tu apellido materno y paterno");
-                     apellido = update.getMessage().getText();
-                     message.setText("Favor de ingresar tu correo electronico");
-                     correo = update.getMessage().getText();
-                     message.setText("Favor ingresa tu fecha de nacimiento aa/mm/dd");
-                     fechaNac = update.getMessage().getText();
-                     message.setText("Favor ingrese su numero de telefono");
-                     telefono = update.getMessage().getText();
-                     System.out.println(nombre + apellido + correo + fechaNac + telefono);
+                     break;
+//Intento de Registro
+                 case "Cliente":
+                     message = new SendMessage().setChatId(chatId).setText("Cliente");
+                     message.setText("Favor de ingresar tu nombre");
+                     nombre = update.getMessage().getText();
+                     Usuario usuario= new Usuario();
+                     usuario.setEstado(Status.ACTIVE.getStatus());
+                     usuario.setNombre(nombre);
+                     UsuarioBl.create(usuario);
                      message.setChatId(update.getMessage().getChatId());
-
                      try {
                          execute(message);
                      } catch (TelegramApiException e) {
                          e.printStackTrace();
                      }
-                     break;
-                 case "Información":
 
+                    /* usuario.setNombre(nombre);
+                     usuario.setApellido(apellido);
+                     usuario.setCorreo(correo);
+                     //usuario.setFechaNac(fechaNac);
+                     //usuario.setTelefono(telefono);*/
+
+
+                     break;
+//Informacion
+                 case "Información":
                      if (messageTextReceived.equals("Información")) {
                          CommandManager commandManager = new CommandManager();
                          SendMessage keyboard = commandManager.CreateKeyboard("Información", chatId);
@@ -158,19 +145,43 @@ public class MainBot  extends TelegramLongPollingBot {
                          } catch (TelegramApiException e) {
                              e.printStackTrace();
                          }
-                         if (message.equals("Noticias")){
-                             message = new SendMessage().setText("Noticias");
-                             message.setText("llalalla");
 
-                             try {
-                                 // Se envía el mensaje
-                                 execute(message);
-                             } catch (TelegramApiException e) {
-                                 e.printStackTrace();
-                             }
-                         }
                      }
 
+                     break;
+
+                 case "Noticias":
+                     message = new SendMessage().setChatId(chatId).setText("Noticias");
+                     message.setText("");
+                     try {
+                         execute(message);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                 case "Tarifario":
+                     msg.setPhoto("AgADAQADO6gxG5vtaEb43oGeNJVevrbsawYABAEAAwIAA3kAAzdoAQABFgQ").setCaption("Tarifario");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+                 case "Horarios":
+                     msg.setPhoto("AgADAQADpKgxG3eDcEaEXKbaFSUTkTW3bgYABAEAAwIAA3kAAydWAAIWBA").setCaption("Horarios del Servicio");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+//Rutas
+                 case "Achumani":
+                     msg.setPhoto("AgADAQADpqgxG3eDcEZP7u1IjS035Rj0awYABAEAAwIAA3kAAxZlAQABFgQ").setCaption("Ruta Achumani - San Pedro \n https://www.youtube.com/watch?v=Z1Mk_c85wGo&feature=emb_title ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                     }
                      break;
              }
       }
@@ -234,23 +245,6 @@ public class MainBot  extends TelegramLongPollingBot {
 
         }
 
-
-     /*   System.out.println(update);
-        update.getMessage().getFrom().getId();
-        if (update.hasMessage() && update.getMessage().hasText()) {
-            List<String> messages = botBl.processUpdate(update);
-            for (String messageText : messages) {
-                SendMessage message = new SendMessage() // Create a SendMessage object with mandatory fields
-                        .setChatId(update.getMessage().getChatId())
-                        .setText(messageText);
-                try {
-                    this.execute(message);
-                } catch (TelegramApiException e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }*/
 
     @Override
     public String getBotUsername() {

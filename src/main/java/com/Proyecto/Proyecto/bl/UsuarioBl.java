@@ -17,55 +17,29 @@ import java.util.Optional;
 @Service
 
 public class UsuarioBl {
-    UsuarioRepository UsuarioRepository;
-
+    UsuarioRepository usuarioRepository;
     @Autowired
-    public UsuarioBl(UsuarioRepository UsuarioRepository) {
-        this.UsuarioRepository = UsuarioRepository;
-    }
+    public UsuarioBl(UsuarioRepository usuarioRepository) {
 
-    public Usuario findPersonById(Integer pk) {
-        Optional<Usuario> optional = this.UsuarioRepository.findById(pk);
-        if (optional.isPresent()) {
-            return optional.get();
-        } else {
-            // Otra alternativa podría ser: crear una nueva persona con valores por defecto y retornar este nuevo objeto
-            throw new RuntimeException("Record cannot found for Usuario with ID: " + pk);
-        }
-    }
-
-  /* public List<UsuarioDto> findAllPeople() {
-        List<UsuarioDto> usuarioDtoList = new ArrayList<>();
-        for (Usuario Usuario:UsuarioRepository.findAllByStatus(Status.ACTIVE.getStatus())) {
-            usuarioDtoList.add(new UsuarioDto(Usuario));
-        }
-        return usuarioDtoList;
-    }*/
-
-   /* UsuarioRepository repository;
-    @Autowired
-    public UsuarioBl(UsuarioRepository repository) {
-
-        this.repository = repository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public UsuarioBl() {
 
     }
 
-    public Usuario findByTelegramId(Update update){
-        Usuario usuario = repository.findByTelegramId(update.getMessage().getFrom().getId());
-        return usuario;
+   /* public Usuario findByTelegramId(Update update){
+        Usuario usuario=usuarioRepository.findByTelegramId(update.getMessage().getFrom().getId());
+        return Usuario;
     }
-
+*/
     public Usuario findByPersonId(Integer id){
-        return (Usuario) repository.findById(id).get();
+        return usuarioRepository.findById(id).get();
     }
+    public Usuario create(Usuario usuario) {
 
-    public Usuario create(Usuario person) {
-
-        return repository.save(person);
-    }*/
+        return usuarioRepository.save(usuario);
+    }
 
 
 }

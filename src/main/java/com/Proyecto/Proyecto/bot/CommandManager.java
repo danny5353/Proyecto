@@ -71,9 +71,10 @@ public class CommandManager {
             // Add it to the message
             message.setReplyMarkup(keyboardMarkup);
 
+
         } else
         if (command.equals("\uD83D\uDE8C ¿Dónde está mi Puma?")) {
-            message.setText("Activa tu GPS");
+            message.setText("Activa tu GPs \n Para volver al menú principal presiona: /start ");
             keyboardMarkup = new ReplyKeyboardMarkup();
             KeyboardButton keyboardButton = new KeyboardButton();
             // Create the keyboard (list of keyboard rows)
@@ -85,7 +86,32 @@ public class CommandManager {
             keyboard.add(row);
             keyboardMarkup.setKeyboard(keyboard);
             message.setReplyMarkup(keyboardMarkup);
-        }
+        }else
+            if (command.equals("\uD83D\uDE8C ¿Qué rutas existen?")){
+                message.setText("Estas son nuestras rutas:  \n Para volver al menú principal presiona: /start");
+                row.add("Inca Llojeta");
+                row.add("Villa Salome");
+                row.add("Chasquipampa");
+                keyboard.add(row);
+                row = new KeyboardRow();
+                row.add("Caja Ferriviaria");
+                row.add("Integradora");
+                row.add("Irpavi II");
+                row.add("Achumani");
+                keyboard.add(row);
+                keyboardMarkup.setKeyboard(keyboard);
+                message.setReplyMarkup(keyboardMarkup);
+            }else
+                if (command.equals("Registrarme")){
+                    message.setText("Tipo de Registro \n Para volver al menú principal presiona: /start");
+                    row.add("Cliente");
+                    keyboard.add(row);
+                    row = new KeyboardRow();
+                    row.add("Administrador");
+                    keyboard.add(row);
+                    keyboardMarkup.setKeyboard(keyboard);
+                    message.setReplyMarkup(keyboardMarkup);
+                }
 
         return message;
     }
