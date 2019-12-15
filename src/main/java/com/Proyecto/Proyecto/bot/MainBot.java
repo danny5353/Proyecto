@@ -183,6 +183,47 @@ UsuarioBl UsuarioBl;
                         e.printStackTrace();
                      }
                      break;
+                 case "Integradora":
+                     msg.setPhoto("AgADAQADRqgxG0visUfl4t0o_qQHeWgbFDAABAEAAwIAA3kAA2siBQABFgQ").setCaption("Ruta integradora \n https://www.youtube.com/watch?v=Z1Mk_c85wGo&feature=emb_title ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+                 case "Irpavi":
+                     msg.setPhoto("AgADAQADRagxG0visUchLTNrrbQRaGDiawYABAEAAwIAA3kAAy7JAQABFgQ").setCaption("Ruta Irpavi II - PUC \n https://www.youtube.com/watch?v=Z1Mk_c85wGo&feature=emb_title ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+                 case "Caja Ferroviaria":
+                     msg.setPhoto("AgADAQADLKgxG7bcuEfW6d26vEx4IAjbbgYABAEAAwIAA3kAA6gjAAIWBA").setCaption("Ruta Caja Ferroviaria \n https://www.youtube.com/watch?v=Z1Mk_c85wGo&feature=emb_title ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+                 case "Villa Salome":
+                     msg.setPhoto("AgADAQADK6gxG7bcuEfi5fzz4anhnuURFDAABAEAAwIAA3kAAxMmBQABFgQ").setCaption("Villa Salome - PUC \n https://www.youtube.com/watch?v=Z1Mk_c85wGo&feature=emb_title ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+                 case "Inca Llojeta":
+                     msg.setPhoto("AgADAQADRKgxG0visUcizvGTLneUH7TgbgYABAEAAwIAA3kAA5IkAAIWBA").setCaption("Ruta Inca Llojeta - PUC \n https://www.youtube.com/watch?v=Z1Mk_c85wGo&feature=emb_title ");
+                     try {
+                         execute(msg);
+                     } catch (TelegramApiException e) {
+                         e.printStackTrace();
+                     }
+                     break;
+
              }
       }
 
