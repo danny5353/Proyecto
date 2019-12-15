@@ -22,6 +22,21 @@ public class CommandManager {
         if ("/Tarifa".equals(command)) {
             url="http://www.lapazbus.bo/fileman/Uploads/files/slide/tarifario_nuevo1.png";
         }
+        if ("/Villa Salome".equals(command)) {
+            url="http://www.lapazbus.bo/fileman/Uploads/files/pdf/mapa_rutavillasalome.pdf";
+        }
+        if ("/Inca Llojeta".equals(command)) {
+            url="http://www.lapazbus.bo/fileman/Uploads/files/Mapa%20Final%20Integradora%20Web-01.png";
+        }
+        if ("/Irpavi II".equals(command)) {
+            url="http://www.lapazbus.bo/fileman/Uploads/files/rutas/IRPAVI%20MAPA%20SOLO-02.pdf";
+        }
+        if ("/Caja Ferriviaria".equals(command)) {
+            url="http://www.lapazbus.bo/fileman/Uploads/files/rutas/%20CAJA%20FERROVIARIA-02-02-02.jpg";
+        }
+        if ("/Integradora".equals(command)) {
+            url="http://www.lapazbus.bo/fileman/Uploads/files/Mapa%20Final%20Integradora%20Web-01.png";
+        }
         return url;
     }
 
